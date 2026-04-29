@@ -1,0 +1,266 @@
+﻿<Window x:Class="SortVisualizer.ArrayInputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ввод массива вручную" 
+        Height="765" 
+        Width="650"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#4A6FA5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5D7FB8"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#3A5A8C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="QuickButton" TargetType="Button">
+            <Setter Property="Background" Value="#2D2D3A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,5,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#4A6FA5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#4A6FA5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#2D2D3A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#4A6FA5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="CaretBrush" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#6C8CBF"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#4A6FA5"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15,15,15,2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="Ввод массива вручную" 
+                   FontSize="18" 
+                   FontWeight="Bold" 
+                   Foreground="#4A6FA5"
+                   Margin="0,0,0,15"/>
+
+        <TextBlock Grid.Row="1" 
+                   Text="Название набора :" 
+                   Foreground="#A0A0B0"
+                   FontSize="13"
+                   Margin="0,0,0,8"/>
+
+        <TextBox x:Name="DataSetNameBox" 
+                 Grid.Row="2"
+                 Margin="0,0,0,15"
+                 Text="Мой набор данных"/>
+
+        <Border Grid.Row="3" 
+                Background="#2D2D3A" 
+                CornerRadius="8" 
+                Padding="12" 
+                Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="Быстрые массивы:" 
+                           Foreground="#4A6FA5" 
+                           FontWeight="Bold" 
+                           Margin="0,0,0,10"
+                           FontSize="13"/>
+                <WrapPanel>
+                    <Button x:Name="QuickSortedButton" 
+                            Content="Отсортированный (1..20)" 
+                            Style="{StaticResource QuickButton}"
+                            Click="QuickSorted_Click"/>
+
+                    <Button x:Name="QuickReversedButton" 
+                            Content="Обратный (20..1)" 
+                            Style="{StaticResource QuickButton}"
+                            Click="QuickReversed_Click"/>
+
+                    <Button x:Name="QuickRandomButton" 
+                            Content="Случайный (20 чисел)" 
+                            Style="{StaticResource QuickButton}"
+                            Click="QuickRandom_Click"/>
+
+                    <Button x:Name="QuickSameButton" 
+                            Content="Одинаковые (все 42)" 
+                            Style="{StaticResource QuickButton}"
+                            Click="QuickSame_Click"/>
+
+                    <Button x:Name="QuickFewButton" 
+                            Content="Несколько элементов (5 шт)" 
+                            Style="{StaticResource QuickButton}"
+                            Click="QuickFew_Click"/>
+
+                    <Button x:Name="QuickManyButton" 
+                            Content="Много элементов (100 шт)" 
+                            Style="{StaticResource QuickButton}"
+                            Click="QuickMany_Click"/>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="4" 
+                   Text="Варианты ввода:" 
+                   Foreground="#A0A0B0"
+                   FontSize="13"
+                   Margin="0,0,0,10"/>
+
+        <Border Grid.Row="5" 
+                Background="#2D2D3A" 
+                CornerRadius="8" 
+                Padding="12" 
+                Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="• Через запятую: 64, 34, 25, 12, 22, 11, 90" 
+                           Foreground="#CCCCCC" FontSize="11" Margin="0,3"/>
+                <TextBlock Text="• Через пробел: 64 34 25 12 22 11 90" 
+                           Foreground="#CCCCCC" FontSize="11" Margin="0,3"/>
+                <TextBlock Text="• Диапазон: 1..20 (создаст числа от 1 до 20)" 
+                           Foreground="#CCCCCC" FontSize="11" Margin="0,3"/>
+                <TextBlock Text="• Случайные: random(50) (50 случайных чисел от 10 до 100)" 
+                           Foreground="#CCCCCC" FontSize="11" Margin="0,3"/>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="6" 
+                   Text="Введите массив чисел:" 
+                   Foreground="#A0A0B0"
+                   FontSize="13"
+                   Margin="0,0,0,8"/>
+
+        <TextBox x:Name="InputTextBox" 
+                 Grid.Row="7"
+                 Height="80"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"
+                 Text="64, 34, 25, 12, 22, 11, 90"/>
+
+        <Border Grid.Row="8" 
+                Background="#2D2D3A" 
+                CornerRadius="8" 
+                Padding="12" 
+                Margin="0,15">
+            <StackPanel>
+                <TextBlock Text="Предпросмотр:" 
+                           Foreground="#4A6FA5" 
+                           FontWeight="Bold" 
+                           Margin="0,0,0,8"
+                           FontSize="13"/>
+                <TextBlock x:Name="PreviewText" 
+                           Text="Ожидание ввода..." 
+                           Foreground="#A0A0B0" 
+                           FontSize="11"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="9" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Left" 
+                    Margin="78,0,0,0" Height="133" VerticalAlignment="Center" Width="546">
+            <Button x:Name="TestButton" 
+                    Content="Проверить" 
+                    Style="{StaticResource ModernButton}"
+                    Click="TestButton_Click" Height="51" Width="95"/>
+
+            <Button x:Name="SaveToDBButton" 
+                    Content="Сохранить в БД" 
+                    Style="{StaticResource ModernButton}"
+                    Margin="10,0,0,0"
+                    Click="SaveToDBButton_Click" RenderTransformOrigin="0.515,1.831" Height="53"/>
+
+            <Button x:Name="ApplyButton" 
+                    Content="Применить (без сохранения)" 
+                    Style="{StaticResource ModernButton}"
+                    Margin="10,0,0,0"
+                    Click="ApplyButton_Click" Height="54"/>
+
+            <Button x:Name="CancelButton" 
+                    Content="Отмена" 
+                    Style="{StaticResource ModernButton}"
+                    Margin="10,0,0,0"
+                    Click="CancelButton_Click" Height="52"/>
+        </StackPanel>
+    </Grid>
+</Window>

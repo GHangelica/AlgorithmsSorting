@@ -1,0 +1,126 @@
+﻿<Window x:Class="SortVisualizer.Views.SortReportsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Отчеты о сортировках" 
+        Height="500" 
+        Width="900"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E">
+
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#4A6FA5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5D7FB8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Отчеты о сортировках" 
+                   FontSize="18" 
+                   FontWeight="Bold" 
+                   Foreground="#4A6FA5"
+                   Margin="0,0,0,15"/>
+
+        <!-- Панель фильтров -->
+        <Border Grid.Row="1" Background="#2D2D3A" CornerRadius="8" Padding="12" Margin="0,0,0,15">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Фильтр:" Foreground="#A0A0B0" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox x:Name="FilterComboBox" Width="200" Background="#252530" Foreground="White" 
+                          SelectionChanged="FilterComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Все сортировки" IsSelected="True"/>
+                    <ComboBoxItem Content="Пузырьковая"/>
+                    <ComboBoxItem Content="Быстрая"/>
+                    <ComboBoxItem Content="Сортировка вставками"/>
+                    <ComboBoxItem Content="Сортировка выбором"/>
+                    <ComboBoxItem Content="Сортировка слиянием"/>
+                </ComboBox>
+                <Button x:Name="ExportButton" Content="Экспорт в CSV" Style="{StaticResource ModernButton}" 
+                        Margin="20,0,0,0" Click="ExportButton_Click"/>
+                <Button x:Name="ClearButton" Content="Очистить историю" Style="{StaticResource ModernButton}" 
+                        Background="#E74C3C" Margin="10,0,0,0" Click="ClearButton_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Таблица отчетов -->
+        <DataGrid x:Name="ReportsGrid" 
+                  Grid.Row="2"
+                  Background="#252530"
+                  Foreground="White"
+                  BorderBrush="#40404F"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  AlternatingRowBackground="#2D2D3A">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Время начала" Binding="{Binding StartTimeFormatted}" Width="100"/>
+                <DataGridTextColumn Header="Тип сортировки" Binding="{Binding SortType}" Width="140"/>
+                <DataGridTextColumn Header="Размер массива" Binding="{Binding ArraySize}" Width="100"/>
+                <DataGridTextColumn Header="Сравнений" Binding="{Binding Comparisons}" Width="100"/>
+                <DataGridTextColumn Header="Обменов" Binding="{Binding Swaps}" Width="100"/>
+                <DataGridTextColumn Header="Время" Binding="{Binding DurationFormatted}" Width="100"/>
+                <DataGridTextColumn Header="Набор данных" Binding="{Binding DataSetName}" Width="150"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Статистика -->
+        <Border Grid.Row="3" Background="#2D2D3A" CornerRadius="8" Padding="12" Margin="0,15,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Всего отчетов:" Foreground="#A0A0B0" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="TotalCountText" Text="0" Foreground="#4A6FA5" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Среднее время:" Foreground="#A0A0B0" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="AvgTimeText" Text="0" Foreground="#4A6FA5" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Лучшее время:" Foreground="#A0A0B0" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="BestTimeText" Text="0" Foreground="#2ECC71" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Худшее время:" Foreground="#A0A0B0" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="WorstTimeText" Text="0" Foreground="#E74C3C" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
