@@ -1,5 +1,6 @@
 ﻿using SortVisualizer.Data;
 using SortVisualizer.Models;
+using SortVisualizer.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,7 +36,12 @@ namespace SortVisualizer
 
             _ = LoadDataSets();
 
-            UpdateAlgorithmInfo(); 
+            UpdateAlgorithmInfo();
+
+            this.SizeChanged += (s, e) => DrawBars();
+
+            SortTypeComboBox.Foreground = Brushes.White;
+            DataSetComboBox.Foreground = Brushes.White;
         }
 
         #region Загрузка данных
@@ -131,18 +137,15 @@ namespace SortVisualizer
             {
                 MessageBox.Show("Нет доступных наборов данных!\n\nСначала создайте набор данных через 'Ввести массив вручную' и сохраните его.",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                var result = MessageBox.Show("Хотите создать новый набор данных прямо сейчас?",
-                    "Создание набора", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    ManualInputButton_Click(sender, e);
-                }
                 return;
             }
 
             await LoadDataFromDatabase(((ComboBoxItem)DataSetComboBox.SelectedItem).Tag);
+
+            if (TournamentModeRadio.IsChecked == true && currentTournamentControl != null)
+            {
+                currentTournamentControl.UpdateData(currentData);
+            }
         }
 
         private void ManualInputButton_Click(object sender, RoutedEventArgs e)
@@ -174,6 +177,11 @@ namespace SortVisualizer
                 }
 
                 StatusText.Text = "Готов";
+
+                if (TournamentModeRadio.IsChecked == true && currentTournamentControl != null)
+                {
+                    currentTournamentControl.UpdateData(currentData);
+                }
             }
         }
 
@@ -753,7 +761,59 @@ namespace SortVisualizer
         }
 
         #endregion
+
+        /*private async Task AnimateBarAppearance(Rectangle bar, double targetHeight)
+        {
+            bar.Height = 0;
+            int steps = 20;
+            double stepHeight = targetHeight / steps;
+
+            for (int i = 0; i < steps; i++)
+            {
+                bar.Height += stepHeight;
+                await Task.Delay(2);
+            }
+            bar.Height = targetHeight;
+        }*/
+
+        private void ModeRadio_Checked(object sender, RoutedEventArgs e)
+        {
+            if (SingleModeRadio == null || TournamentModeRadio == null) return;
+
+            if (TournamentModeRadio.IsChecked == true)
+            {
+                SingleModePanel.Visibility = Visibility.Collapsed;
+                VisualizationCanvas.Visibility = Visibility.Collapsed;
+                TournamentContainer.Visibility = Visibility.Visible;
+
+                AlgorithmInfo.Visibility = Visibility.Collapsed;
+
+                if (currentData != null && currentData.Count > 0)
+                {
+                    currentTournamentControl = new Views.TournamentControl(currentData);
+                    TournamentContainer.Content = currentTournamentControl;
+                }
+                else
+                {
+                    MessageBox.Show("Сначала загрузите данные!", "Предупреждение",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    SingleModeRadio.IsChecked = true;
+                }
+            }
+            else
+            {
+                SingleModePanel.Visibility = Visibility.Visible;
+                VisualizationCanvas.Visibility = Visibility.Visible;
+                TournamentContainer.Visibility = Visibility.Collapsed;
+                TournamentContainer.Content = null;
+                currentTournamentControl = null;
+
+                AlgorithmInfo.Visibility = Visibility.Visible;
+            }
+        }
+        private TournamentControl currentTournamentControl;
+
+    } 
+
+
     }
-
-
-}

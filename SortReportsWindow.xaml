@@ -5,11 +5,11 @@
         Height="500" 
         Width="900"
         WindowStartupLocation="CenterOwner"
-        Background="#1A1A2E">
+        Background="#1E1E1E">
 
     <Window.Resources>
         <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="#4A6FA5"/>
+            <Setter Property="Background" Value="#3A7AFE"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -29,7 +29,56 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#5D7FB8"/>
+                    <Setter Property="Background" Value="#2F63D8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для заголовков колонок DataGrid -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#252525"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="#40404F"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridColumnHeader">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"
+                                              Margin="5,0,5,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для ComboBox -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#252530"/>
+            <Setter Property="BorderBrush" Value="#3A7AFE"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,5"/>
+        </Style>
+
+        <!-- Стиль для ComboBoxItem -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#252530"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3A7AFE"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#3A7AFE"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -46,48 +95,144 @@
         <TextBlock Text="Отчеты о сортировках" 
                    FontSize="18" 
                    FontWeight="Bold" 
-                   Foreground="#4A6FA5"
+                   Foreground="#3A7AFE"
                    Margin="0,0,0,15"/>
 
         <!-- Панель фильтров -->
         <Border Grid.Row="1" Background="#2D2D3A" CornerRadius="8" Padding="12" Margin="0,0,0,15">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock Text="Фильтр:" Foreground="#A0A0B0" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <ComboBox x:Name="FilterComboBox" Width="200" Background="#252530" Foreground="White" 
+                <ComboBox x:Name="FilterComboBox" Foreground="#A0A0B0" Width="200" 
                           SelectionChanged="FilterComboBox_SelectionChanged">
                     <ComboBoxItem Content="Все сортировки" IsSelected="True"/>
-                    <ComboBoxItem Content="Пузырьковая"/>
-                    <ComboBoxItem Content="Быстрая"/>
-                    <ComboBoxItem Content="Сортировка вставками"/>
-                    <ComboBoxItem Content="Сортировка выбором"/>
-                    <ComboBoxItem Content="Сортировка слиянием"/>
+                    <ComboBoxItem Content="Bubble Sort"/>
+                    <ComboBoxItem Content="Quick Sort"/>
+                    <ComboBoxItem Content="Insertion Sort"/>
+                    <ComboBoxItem Content="Selection Sort"/>
+                    <ComboBoxItem Content="Merge Sort"/>
                 </ComboBox>
                 <Button x:Name="ExportButton" Content="Экспорт в CSV" Style="{StaticResource ModernButton}" 
                         Margin="20,0,0,0" Click="ExportButton_Click"/>
                 <Button x:Name="ClearButton" Content="Очистить историю" Style="{StaticResource ModernButton}" 
-                        Background="#E74C3C" Margin="10,0,0,0" Click="ClearButton_Click"/>
+                        Background="#D9534F" Margin="10,0,0,0" Click="ClearButton_Click"/>
             </StackPanel>
         </Border>
 
         <!-- Таблица отчетов -->
         <DataGrid x:Name="ReportsGrid" 
-                  Grid.Row="2"
-                  Background="#252530"
-                  Foreground="White"
-                  BorderBrush="#40404F"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  AlternatingRowBackground="#2D2D3A">
+          Grid.Row="2"
+          Background="#2D2D3A"
+          Foreground="White"
+          BorderBrush="#40404F"
+          AutoGenerateColumns="False"
+          IsReadOnly="True"
+          AlternatingRowBackground="#3A3A4A"
+          RowBackground="#2D2D3A"
+          HeadersVisibility="Column"
+          GridLinesVisibility="Horizontal"
+          HorizontalGridLinesBrush="#40404F"
+          VerticalGridLinesBrush="Transparent"
+          RowHeight="32">
+
+            <DataGrid.Resources>
+                <!-- Цвет при наведении -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#3A7AFE"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+                <!-- Цвета для строк -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#2D2D3A"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#2D2D3A"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White"/>
+            </DataGrid.Resources>
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="#2D2D3A"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="#2D2D3A"/>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="#3A3A4A"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#3A7AFE"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Время начала" Binding="{Binding StartTimeFormatted}" Width="100"/>
-                <DataGridTextColumn Header="Тип сортировки" Binding="{Binding SortType}" Width="140"/>
-                <DataGridTextColumn Header="Размер массива" Binding="{Binding ArraySize}" Width="100"/>
-                <DataGridTextColumn Header="Сравнений" Binding="{Binding Comparisons}" Width="100"/>
-                <DataGridTextColumn Header="Обменов" Binding="{Binding Swaps}" Width="100"/>
-                <DataGridTextColumn Header="Время" Binding="{Binding DurationFormatted}" Width="100"/>
-                <DataGridTextColumn Header="Набор данных" Binding="{Binding DataSetName}" Width="150"/>
-                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="80"/>
+                <DataGridTextColumn Header="Время начала" Binding="{Binding StartTimeFormatted}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Тип сортировки" Binding="{Binding SortType}" Width="140">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Размер массива" Binding="{Binding ArraySize}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Сравнений" Binding="{Binding Comparisons}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Обменов" Binding="{Binding Swaps}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Время (мс)" Binding="{Binding DurationMs}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="80">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -103,12 +248,12 @@
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Всего отчетов:" Foreground="#A0A0B0" Margin="0,0,10,0"/>
-                    <TextBlock x:Name="TotalCountText" Text="0" Foreground="#4A6FA5" FontWeight="Bold"/>
+                    <TextBlock x:Name="TotalCountText" Text="0" Foreground="#3A7AFE" FontWeight="Bold"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Среднее время:" Foreground="#A0A0B0" Margin="0,0,10,0"/>
-                    <TextBlock x:Name="AvgTimeText" Text="0" Foreground="#4A6FA5" FontWeight="Bold"/>
+                    <TextBlock x:Name="AvgTimeText" Text="0" Foreground="#3A7AFE" FontWeight="Bold"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
