@@ -114,5 +114,9 @@ namespace SortVisualizer.Views
                 MessageBox.Show("История очищена!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+        private void ReportsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

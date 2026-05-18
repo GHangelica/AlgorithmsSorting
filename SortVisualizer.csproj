@@ -9,6 +9,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="TournamentWindow.xaml.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Remove="TournamentWindow.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.4" />
 	</ItemGroup>
 
